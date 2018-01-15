@@ -46,7 +46,7 @@ void on_pause_clicked(){
 void on_stop_clicked(){
     
     system("pkill -SIGHUP mpg321");
-
+    paused = 0;
     g_print("song stopped");
 
 }
