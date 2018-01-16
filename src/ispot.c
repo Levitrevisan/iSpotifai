@@ -1,4 +1,10 @@
 #include <gtk/gtk.h>
+#include <string.h>
+
+GtkWidget *song_name_entry_obj;
+char *path = "./../music/";
+char *file_name = "VITAS.mp3";
+
 
 int paused = 0;
 
@@ -12,10 +18,11 @@ int main (int argc, char *argv[]){
     GtkBuilder = gtk_builder_new();
     gtk_builder_add_from_file(GtkBuilder,"interface.glade",NULL);
     window = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"window1"));
+
+    song_name_entry_obj = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"song_name_entry"));   
     gtk_builder_connect_signals(GtkBuilder,NULL);
     g_object_unref(GtkBuilder);
-    
-  
+ 
     gtk_widget_show(window);
     gtk_main();
 
@@ -31,7 +38,16 @@ void on_play_clicked(){
         system("pkill -SIGCONT mpg321 &");
     }
     else{
-        system("mpg321 VITAS.mp3 &");
+	    char final_command[250];
+	    memset(final_command,0,250);
+	    strcat(final_command,"mpg321 ");
+	    strcat(final_command,path);
+	    strcat(final_command,file_name);
+	    strcat(final_command," &");
+
+        gtk_entry_set_text(GTK_ENTRY (song_name_entry_obj),file_name);
+
+	    system(final_command);
     }
 }
 
