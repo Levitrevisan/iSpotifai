@@ -1,16 +1,24 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include <regex.h>
+#include <stdio.h>
+#include "mytimer.h"
 
 GtkWidget *song_name_entry_obj,*level_bar1_obj;
 char *path = "./../music/";
-char *file_name = "VITAS.mp3";
+char *file_name = "havana.mp3";
 
+size_t timer1;
 
+int seconds = 0;
 int paused = 0;
+
+
+void time_handler1(size_t timer_id, void * user_data);
 
 int main (int argc, char *argv[]){
     
+
     GtkBuilder *GtkBuilder;
     GtkWidget *window;
 
@@ -31,11 +39,19 @@ int main (int argc, char *argv[]){
 
 }
 
+
+void time_handler1(size_t timer_id,void * user_data){
+    seconds++;
+    gtk_level_bar_set_value(GTK_LEVEL_BAR (level_bar1_obj),seconds);
+}
+
 void on_play_clicked(){
 
     g_print("play was pressed \n");
     if (paused == 1){
         paused = 0;
+        initialize();
+        timer1 = start_timer(1, time_handler1, TIMER_PERIODIC, NULL);
         system("pkill -SIGCONT mpg321 &");
     }
     else{
@@ -88,23 +104,28 @@ void on_play_clicked(){
         gtk_entry_set_text(GTK_ENTRY (song_name_entry_obj),file_name);
 
 	    system(final_command);
+
+        initialize();
+        timer1 = start_timer(1, time_handler1, TIMER_PERIODIC, NULL);
     }
 }
 
 
 void on_pause_clicked(){
-    gtk_level_bar_set_value(GTK_LEVEL_BAR (level_bar1_obj),50);
     g_print("pausing song\n");
     paused = 1;
     system("pkill -SIGSTOP mpg321");
+    stop_timer(timer1);
+    finalize();
 }
 
 void on_stop_clicked(){
-    
+    seconds = 0; 
     system("pkill -SIGHUP mpg321");
     paused = 0;
     g_print("song stopped\n");
-
+    stop_timer(timer1);
+    finalize();
 }
 
 void on_window1_destroy(){
@@ -112,3 +133,4 @@ void on_window1_destroy(){
     gtk_main_quit();
 
 }
+
