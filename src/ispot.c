@@ -121,6 +121,7 @@ void on_pause_clicked(){
 
 void on_stop_clicked(){
     seconds = 0; 
+    gtk_level_bar_set_value(GTK_LEVEL_BAR (level_bar1_obj),seconds);
     system("pkill -SIGHUP mpg321");
     paused = 0;
     g_print("song stopped\n");
