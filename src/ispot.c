@@ -1,10 +1,13 @@
+//compile with :
+// gcc `pkg-config --cflags gtk+-3.0` `pkg-config --cflags gtk+-3.0 gmodule-export-2.0` `pkg-config --cflags libglade-2.0` -o ispotifai ispot.c mytimer.c mytimer.h `pkg-config --libs gtk+-3.0` `pkg-config --libs gtk+-3.0 gmodule-export-2.0` `pkg-config --cflags libglade-2.0`
+
 #include <gtk/gtk.h>
 #include <string.h>
 #include <regex.h>
 #include <stdio.h>
 #include "mytimer.h"
 
-GtkWidget *song_name_entry_obj,*level_bar1_obj;
+GtkWidget *song_name_entry_obj,*level_bar1_obj,*treeview1_obj;
 char *path = "./../music/";
 char *file_name = "havana.mp3";
 
@@ -29,6 +32,9 @@ int main (int argc, char *argv[]){
     window = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"window1"));
     level_bar1_obj = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"levelbar1"));
     song_name_entry_obj = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"song_name_entry"));   
+    treeview1_obj = GTK_WIDGET(gtk_builder_get_object(GtkBuilder,"treeview1"));
+    
+
     gtk_builder_connect_signals(GtkBuilder,NULL);
     g_object_unref(GtkBuilder);
  
@@ -46,6 +52,10 @@ void time_handler1(size_t timer_id,void * user_data){
 }
 
 void on_play_clicked(){
+    GtkTreeIter iter;
+    
+    //currently working here, trying to put an element on the list when I click play, just to easy debugging.
+    gtk_tree_store_set_value(GTK_TREE_VIEW(treeview1_obj),&iter,1,"testando");
 
     g_print("play was pressed \n");
     if (paused == 1){
