@@ -111,6 +111,24 @@
                 </child>
               </object>
             </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                <property name="resizable">True</property>
+                <property name="title" translatable="yes">Song Name</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                <property name="resizable">True</property>
+                <property name="title" translatable="yes">Artist</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="treeviewcolumn4">
+                <property name="resizable">True</property>
+                <property name="title" translatable="yes">Style</property>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
