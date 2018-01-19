@@ -76,10 +76,8 @@ void on_play_clicked(){
     else{
         //take the time of the song 
 	    char final_command[250];
-        char temp_buff[250];
-        char regex_buff[100];
-        regex_t regex;
-        int reti;
+        //char temp_buff[250];
+        char b[250];
         memset(final_command,0,250);
         strcat(final_command,"mpg321 ");
         strcat(final_command, path);
@@ -89,29 +87,9 @@ void on_play_clicked(){
         FILE *file;
         file = fopen ("duracao.txt","r");
         if (file){
-            while (fscanf(file,"%s", temp_buff) != EOF)
-                g_print(temp_buff);
+//            fscanf(file, "%*[^\[]")
             fclose(file);
         }
-        reti = regcomp(&regex, "[0-9]",REG_EXTENDED);
-        if (reti) {
-            g_print("regex couldn't compile\n");
-        }
-        //the second argument should be temp_buff, containig a string read on the txt
-        //but i'm not able to read that, so i'm not able to acquire the duration of the songs
-        reti = regexec(&regex, "teste 0232 232" ,0,NULL,0);
-
-        if(!reti){
-            g_print("match\n");
-        }
-        else if (reti == REG_NOMATCH){
-            g_print("no match\n");
-        }
-        else{
-            regerror(reti, &regex, regex_buff,sizeof(regex_buff));
-            g_print(temp_buff);
-        }
-	    
 
         //send command to play song and display it's name 
 	    memset(final_command,0,250);
